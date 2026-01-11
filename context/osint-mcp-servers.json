@@ -1,0 +1,106 @@
+{
+  "source": "https://github.com/soxoj/awesome-osint-mcp-servers",
+  "last_updated": "2026-01-11",
+  "description": "OSINT-focused MCP servers that can enhance investigation capabilities",
+  "categories": {
+    "socmint": {
+      "name": "Social Media Intelligence",
+      "description": "Tools for investigating social media presence, accounts, and online identities",
+      "servers": [
+        {
+          "name": "Maigret",
+          "github_url": "https://github.com/BurtTheCoder/mcp-maigret",
+          "description": "A powerful OSINT tool that collects user account information from various public sources",
+          "capabilities": [
+            "Username enumeration across platforms",
+            "Social media account discovery",
+            "Online identity mapping"
+          ],
+          "requires_api_key": false
+        }
+      ]
+    },
+    "network_scanning": {
+      "name": "Network Scanning & Reconnaissance",
+      "description": "Tools for network intelligence, device discovery, and infrastructure analysis",
+      "servers": [
+        {
+          "name": "Shodan",
+          "github_url": "https://github.com/BurtTheCoder/mcp-shodan",
+          "description": "MCP server for querying the Shodan API and Shodan CVEDB for IP reconnaissance, DNS operations, vulnerability tracking, and device discovery",
+          "capabilities": [
+            "IP reconnaissance",
+            "DNS operations",
+            "Vulnerability tracking",
+            "Device discovery",
+            "Network intelligence"
+          ],
+          "requires_api_key": true,
+          "api_key_env": "SHODAN_API_KEY"
+        },
+        {
+          "name": "ZoomEye",
+          "github_url": "https://github.com/zoomeye-ai/mcp_zoomeye",
+          "description": "Tool for obtaining network asset information by querying ZoomEye using search parameters and dorks",
+          "capabilities": [
+            "Network asset discovery",
+            "Device fingerprinting",
+            "Search via dorks"
+          ],
+          "requires_api_key": true
+        },
+        {
+          "name": "DNSTwist",
+          "github_url": "https://github.com/BurtTheCoder/mcp-dnstwist",
+          "description": "A powerful DNS fuzzing tool that helps detect typosquatting, phishing, and corporate espionage",
+          "capabilities": [
+            "Typosquatting detection",
+            "Phishing domain discovery",
+            "Brand protection",
+            "Domain permutation analysis"
+          ],
+          "requires_api_key": false
+        },
+        {
+          "name": "OSINT Toolkit",
+          "url": "https://www.pulsemcp.com/servers/himanshusanecha-osint-toolkit",
+          "description": "Unified interface for network reconnaissance with parallel execution of OSINT tools including WHOIS, Nmap, DNS lookups, and typosquatting detection",
+          "capabilities": [
+            "WHOIS lookups",
+            "Nmap scanning",
+            "DNS lookups",
+            "Typosquatting detection",
+            "Parallel tool execution"
+          ],
+          "requires_api_key": false
+        }
+      ]
+    },
+    "threat_intelligence": {
+      "name": "Threat Intelligence & Analysis",
+      "description": "Tools for analyzing files, URLs, and indicators of compromise",
+      "servers": [
+        {
+          "name": "VirusTotal",
+          "github_url": "https://github.com/BurtTheCoder/mcp-virustotal",
+          "description": "Tools to analyze URLs, files via hash, IP addresses, domains, and retrieve relationships for detailed analysis",
+          "capabilities": [
+            "URL analysis",
+            "File hash lookups",
+            "IP reputation",
+            "Domain analysis",
+            "Relationship mapping",
+            "Malware detection"
+          ],
+          "requires_api_key": true,
+          "api_key_env": "VIRUSTOTAL_API_KEY"
+        }
+      ]
+    }
+  },
+  "usage_notes": {
+    "for_claude": "When recommending MCP servers to the user, consider the investigation type and suggest relevant servers. For people investigations, prioritize SOCMINT. For infrastructure/technical investigations, prioritize network scanning tools.",
+    "installation": "Most MCP servers can be installed via npm or run as Docker containers. Check individual GitHub repositories for installation instructions.",
+    "api_keys": "Some servers require API keys. Help the user understand which keys are needed and where to obtain them."
+  }
+}
