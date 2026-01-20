@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OSINT Investigation Graph Schema",
+  "description": "Machine-parseable graph format for OSINT investigations, compatible with SpiderFoot exports",
+  "version": "1.0.0",
+
+  "entityTypes": {
+    "PERSON": {
+      "description": "Individual human being",
+      "properties": ["name", "aliases", "dob", "nationality", "occupation"],
+      "spiderfootMapping": ["HUMAN_NAME"]
+    },
+    "ORGANIZATION": {
+      "description": "Company, group, or institution",
+      "properties": ["name", "type", "registration", "jurisdiction", "status"],
+      "spiderfootMapping": ["COMPANY_NAME", "AFFILIATE_COMPANY_NAME"]
+    },
+    "USERNAME": {
+      "description": "Online account or handle",
+      "properties": ["username", "platform", "url", "created", "verified"],
+      "spiderfootMapping": ["USERNAME", "SOCIAL_MEDIA"]
+    },
+    "EMAIL": {
+      "description": "Email address",
+      "properties": ["address", "domain", "verified", "breached"],
+      "spiderfootMapping": ["EMAILADDR", "EMAILADDR_GENERIC"]
+    },
+    "PHONE": {
+      "description": "Phone number",
+      "properties": ["number", "type", "carrier", "country"],
+      "spiderfootMapping": ["PHONE_NUMBER"]
+    },
+    "DOMAIN": {
+      "description": "Internet domain name",
+      "properties": ["domain", "registrar", "created", "expires", "nameservers"],
+      "spiderfootMapping": ["DOMAIN_NAME", "INTERNET_NAME", "AFFILIATE_INTERNET_NAME"]
+    },
+    "IP_ADDRESS": {
+      "description": "IP address (v4 or v6)",
+      "properties": ["address", "version", "asn", "country", "hostname"],
+      "spiderfootMapping": ["IP_ADDRESS"]
+    },
+    "LOCATION": {
+      "description": "Physical location or address",
+      "properties": ["address", "city", "country", "coordinates", "type"],
+      "spiderfootMapping": ["GEOINFO", "PHYSICAL_ADDRESS"]
+    },
+    "DOCUMENT": {
+      "description": "Document or file",
+      "properties": ["title", "type", "url", "hash", "created"],
+      "spiderfootMapping": ["RAW_FILE_META", "LINKED_URL_INTERNAL"]
+    },
+    "CRYPTOCURRENCY": {
+      "description": "Cryptocurrency address or wallet",
+      "properties": ["address", "currency", "balance", "firstSeen"],
+      "spiderfootMapping": ["BITCOIN_ADDRESS"]
+    },
+    "VEHICLE": {
+      "description": "Vehicle (car, boat, aircraft)",
+      "properties": ["registration", "type", "make", "model", "year"],
+      "spiderfootMapping": []
+    },
+    "EVENT": {
+      "description": "Significant event or incident",
+      "properties": ["name", "date", "location", "type", "description"],
+      "spiderfootMapping": []
+    },
+    "CREDENTIAL": {
+      "description": "Leaked or exposed credential",
+      "properties": ["username", "passwordHash", "source", "date"],
+      "spiderfootMapping": ["PASSWORD_COMPROMISED", "HASH_COMPROMISED"]
+    },
+    "MALWARE": {
+      "description": "Malware sample or indicator",
+      "properties": ["hash", "name", "family", "type"],
+      "spiderfootMapping": ["MALICIOUS_HASH"]
+    },
+    "CUSTOM": {
+      "description": "Custom entity type for investigation-specific needs",
+      "properties": ["customType", "customProperties"],
+      "spiderfootMapping": []
+    }
+  },
+
+  "relationshipTypes": {
+    "OWNS": {
+      "description": "Ownership relationship",
+      "validPairs": [["PERSON", "ORGANIZATION"], ["PERSON", "DOMAIN"], ["ORGANIZATION", "DOMAIN"], ["PERSON", "VEHICLE"]],
+      "properties": ["since", "percentage", "verified"]
+    },
+    "WORKS_FOR": {
+      "description": "Employment relationship",
+      "validPairs": [["PERSON", "ORGANIZATION"]],
+      "properties": ["role", "since", "until", "verified"]
+    },
+    "KNOWS": {
+      "description": "Personal acquaintance",
+      "validPairs": [["PERSON", "PERSON"]],
+      "properties": ["context", "since", "strength"]
+    },
+    "RELATED_TO": {
+      "description": "Family relationship",
+      "validPairs": [["PERSON", "PERSON"]],
+      "properties": ["relationship", "verified"]
+    },
+    "CONTROLS": {
+      "description": "Control or administration",
+      "validPairs": [["PERSON", "USERNAME"], ["PERSON", "EMAIL"], ["PERSON", "DOMAIN"], ["ORGANIZATION", "DOMAIN"]],
+      "properties": ["since", "verified"]
+    },
+    "COMMUNICATES_WITH": {
+      "description": "Communication relationship",
+      "validPairs": [["PERSON", "PERSON"], ["USERNAME", "USERNAME"], ["EMAIL", "EMAIL"]],
+      "properties": ["method", "frequency", "since"]
+    },
+    "LOCATED_AT": {
+      "description": "Physical presence or registration",
+      "validPairs": [["PERSON", "LOCATION"], ["ORGANIZATION", "LOCATION"], ["IP_ADDRESS", "LOCATION"]],
+      "properties": ["type", "since", "until", "verified"]
+    },
+    "HOSTS": {
+      "description": "Technical hosting relationship",
+      "validPairs": [["IP_ADDRESS", "DOMAIN"], ["ORGANIZATION", "DOMAIN"]],
+      "properties": ["since", "verified"]
+    },
+    "MEMBER_OF": {
+      "description": "Membership in group or organization",
+      "validPairs": [["PERSON", "ORGANIZATION"], ["ORGANIZATION", "ORGANIZATION"]],
+      "properties": ["role", "since", "until", "verified"]
+    },
+    "TRANSACTED_WITH": {
+      "description": "Financial transaction",
+      "validPairs": [["PERSON", "PERSON"], ["ORGANIZATION", "ORGANIZATION"], ["CRYPTOCURRENCY", "CRYPTOCURRENCY"]],
+      "properties": ["amount", "currency", "date", "type"]
+    },
+    "ALIASES": {
+      "description": "Same entity, different identifier",
+      "validPairs": [["PERSON", "PERSON"], ["USERNAME", "USERNAME"], ["ORGANIZATION", "ORGANIZATION"]],
+      "properties": ["confidence", "evidence"]
+    },
+    "MENTIONED_IN": {
+      "description": "Entity mentioned in document/source",
+      "validPairs": [["PERSON", "DOCUMENT"], ["ORGANIZATION", "DOCUMENT"], ["EVENT", "DOCUMENT"]],
+      "properties": ["context", "sentiment"]
+    },
+    "PARTICIPATED_IN": {
+      "description": "Participation in event",
+      "validPairs": [["PERSON", "EVENT"], ["ORGANIZATION", "EVENT"]],
+      "properties": ["role", "verified"]
+    },
+    "LINKED_TO": {
+      "description": "Generic connection (use when specific type unknown)",
+      "validPairs": "any",
+      "properties": ["context", "strength", "evidence"]
+    }
+  },
+
+  "confidenceLevels": {
+    "CONFIRMED": {"value": 1.0, "description": "Verified through multiple independent sources"},
+    "HIGH": {"value": 0.8, "description": "Strong evidence, single authoritative source"},
+    "MEDIUM": {"value": 0.5, "description": "Reasonable evidence, some uncertainty"},
+    "LOW": {"value": 0.3, "description": "Possible connection, limited evidence"},
+    "SPECULATIVE": {"value": 0.1, "description": "Hypothesis, requires verification"}
+  },
+
+  "sourceTypes": {
+    "SPIDERFOOT": "Automated SpiderFoot collection",
+    "MANUAL": "Manual OSINT research",
+    "PUBLIC_RECORD": "Official public records",
+    "SOCIAL_MEDIA": "Social media platform",
+    "LEAK_DATABASE": "Data breach/leak",
+    "NEWS": "News article or publication",
+    "COURT_RECORD": "Legal/court documents",
+    "CORPORATE_REGISTRY": "Business registration",
+    "WHOIS": "Domain registration data",
+    "USER_PROVIDED": "Provided by investigation client"
+  }
+}

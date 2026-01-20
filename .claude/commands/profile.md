@@ -14,6 +14,8 @@ If $ARGUMENTS is provided, use it as the subject. Otherwise, ask the user:
 - What entity should be profiled?
 - What type? (Person / Organization / Online Account / Other)
 
+**Code Names:** Check `context/codenames.md` to see if this entity has a code name. If not, ask the user if they'd like to assign one for privacy/consistency. Add new code names to the registry.
+
 ### 2. Check Existing Work
 
 - Look in `analysis/entity-profiles/` for existing profiles on this entity
@@ -49,11 +51,12 @@ Using available OSINT tools and web searches, collect:
 
 ### 4. Create Profile Document
 
-Save to `analysis/entity-profiles/[entity-name].md`:
+Save to `analysis/entity-profiles/[CODENAME].md` (use code name if assigned, otherwise entity name):
 
 ```markdown
-# Entity Profile: [Name]
+# Entity Profile: [CODENAME]
 
+**Code Name**: [CODENAME]
 **Type**: [Person / Organization / Account]
 **Created**: [Date]
 **Last Updated**: [Date]
